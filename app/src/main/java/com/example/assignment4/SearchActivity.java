@@ -21,83 +21,24 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
     Button bsearchBut;
     EditText bsearchBox;
-    private DatabaseReference pubDatabaseRef;
-    private DatabaseReference ownDatabaseRef;
-    private FirebaseDatabase database;
-    String searchString;
-    private ProgressDialog progressDialog;
-    private List<String> searchList;
     private Bundle bundle;
-
-
+    String searchString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
-
         bsearchBut = (Button) findViewById(R.id.searchBut);
         bsearchBox = (EditText) findViewById(R.id.searchBox);
-        searchList = new ArrayList<>();
-
         bsearchBut.setOnClickListener(this);
-
-//        progressDialog = new ProgressDialog(this);
-//        progressDialog.setMessage("Waiting for the searching result....");
-//        progressDialog.show();
     }
     @Override
     public void onClick(View v){
         switch (v.getId()) {
             case R.id.searchBut:
-                database = FirebaseDatabase.getInstance();
                 searchString = bsearchBox.getText().toString();
                 bundle = getIntent().getExtras();
-                if(bundle.getBoolean("isAuthen")) {
-                    ownDatabaseRef = FirebaseDatabase.getInstance().getReference("privateUser");
-                    ownDatabaseRef.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            progressDialog.dismiss();
-                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                Photo img = snapshot.getValue(Photo.class);
-                                if (img.getDescription().toLowerCase().contains(searchString.toLowerCase())){
-                                    searchList.add(img.getPhotoName());
-                                }
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-                            progressDialog.dismiss();
-                        }
-                    });
-                }
-                pubDatabaseRef = FirebaseDatabase.getInstance().getReference("publicPhoto");
-                pubDatabaseRef.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        progressDialog.dismiss();
-                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                            Photo img = snapshot.getValue(Photo.class);
-                            if (img.getDescription().toLowerCase().contains(searchString.toLowerCase())){
-                                searchList.add(img.getPhotoName());
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        progressDialog.dismiss();
-                    }
-                });
-                Bundle bundle = new Bundle();
-                if (searchList.size() == 0){
-                    bundle.getBoolean("searchExist", false);
-                } else {
-                    bundle.putString("searchResult", searchList.get(0));
-                    bundle.putBoolean("searchExist", true);
-                }
+                bundle.putString("searchString", searchString);
                 Intent intent = new Intent(this, SearchResultActivity.class);
                 intent.putExtras(bundle);
                 startActivity(intent);

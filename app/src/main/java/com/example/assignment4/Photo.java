@@ -28,7 +28,9 @@ public class Photo {
     public String getDescription(){
         return this.description;
     }
-
+    public String getPhotoId(){
+        return this.photoId;
+    }
     public String getUrl(){
         return this.url;
     }

@@ -42,21 +42,20 @@ public class SearchResultActivity extends AppCompatActivity {
         searchString = bundle.getString("searchString");
 
         if(bundle.getBoolean("isAuthen")) {
-            System.out.println("ffffffhhhhhhhhh|||!!!!!@@@@@@");
             ownDatabaseRef = FirebaseDatabase.getInstance().getReference("privateUser");
             ownDatabaseRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    System.out.println("f1111111111111111111111111");
                     progressDialog.dismiss();
-                    DataSnapshot dataSnapshots = dataSnapshot.child(bundle.getString("userID"));
-                    for (DataSnapshot snapshot : dataSnapshots.getChildren()) {
-                        System.out.println("222222222222222222222");
-                        Photo img = snapshot.getValue(Photo.class);
-                        System.out.println("Here is the private description" + img.getDescription());
-                        if (img.getDescription().toLowerCase().contains(searchString.toLowerCase())){
-                            System.out.println("Here is the key word result!!!!!!" + img.getPhotoName());
-                            searchList.add(img);
+                    String userId = bundle.getString("userID");
+                    if (userId != null){
+                        DataSnapshot dataSnapshots = dataSnapshot.child(userId);
+                        for (DataSnapshot snapshot : dataSnapshots.getChildren()) {
+                            Photo img = snapshot.getValue(Photo.class);
+                            if (img.getDescription().toLowerCase().contains(searchString.toLowerCase())){
+                                System.out.println("Here is the key word result!!!!!!" + img.getPhotoName());
+                                searchList.add(img);
+                            }
                         }
                     }
                 }
@@ -67,7 +66,6 @@ public class SearchResultActivity extends AppCompatActivity {
                 }
             });
         }
-        System.out.println("hehehehehhehehhehehehehheh|||!!!!!@@@@@@");
         pubDatabaseRef = FirebaseDatabase.getInstance().getReference("publicPhoto");
         pubDatabaseRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -75,14 +73,12 @@ public class SearchResultActivity extends AppCompatActivity {
                 progressDialog.dismiss();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Photo img = snapshot.getValue(Photo.class);
-                    System.out.println("Here is the public description" + img.getDescription());
                     if (img.getDescription().toLowerCase().contains(searchString.toLowerCase())){
-                        System.out.println("Here is the key word result@@@@@@@@@" + img.getPhotoName());
                         searchList.add(img);
                     }
                 }
                 //Init adapter
-                adapter = new ImageListAdapter(SearchResultActivity.this, R.layout.image_item, searchList);
+                adapter = new ImageListAdapter(SearchResultActivity.this, R.layout.image_item, searchList, "plain");
                 //Set adapter for listview
                 lv.setAdapter(adapter);
             }

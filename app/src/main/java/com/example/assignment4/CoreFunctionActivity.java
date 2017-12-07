@@ -5,12 +5,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Filter;
 import android.widget.Toast;
 
 public class CoreFunctionActivity extends AppCompatActivity implements View.OnClickListener {
     Button buploadButton;
     Button bviewButton;
     Button bsearchButton;
+    Button bfilterButton;
     Bundle bundle;
 
     @Override
@@ -20,11 +22,13 @@ public class CoreFunctionActivity extends AppCompatActivity implements View.OnCl
         buploadButton = (Button) findViewById(R.id.uploadButton);
         bviewButton = (Button) findViewById(R.id.viewButton);
         bsearchButton = (Button) findViewById(R.id.searchButton);
+        bfilterButton = (Button) findViewById(R.id.filterButton);
 
 
         buploadButton.setOnClickListener(this);
         bviewButton.setOnClickListener(this);
         bsearchButton.setOnClickListener(this);
+        bfilterButton.setOnClickListener(this);
 
     }
     @Override
@@ -43,6 +47,7 @@ public class CoreFunctionActivity extends AppCompatActivity implements View.OnCl
             case R.id.viewButton:
                 Intent intentView = new Intent(this, ViewActivity.class);
                 bundle = getIntent().getExtras();
+                bundle.putString("view", "plain");
                 intentView.putExtras(bundle);
                 startActivity(intentView);
                 break;
@@ -51,6 +56,13 @@ public class CoreFunctionActivity extends AppCompatActivity implements View.OnCl
                 bundle = getIntent().getExtras();
                 intentSearch.putExtras(bundle);
                 startActivity(intentSearch);
+                break;
+            case R.id.filterButton:
+                Intent intentFilter = new Intent(this, ViewActivity.class);
+                bundle = getIntent().getExtras();
+                bundle.putString("view", "filter");
+                intentFilter.putExtras(bundle);
+                startActivity(intentFilter);
                 break;
 
         }

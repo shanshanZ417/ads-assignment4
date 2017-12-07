@@ -25,6 +25,7 @@ public class ViewActivity extends AppCompatActivity {
     private ImageListAdapter adapter;
     private ProgressDialog progressDialog;
     private Bundle bundle;
+    private String views;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,16 +40,20 @@ public class ViewActivity extends AppCompatActivity {
 
         pubDatabaseRef = FirebaseDatabase.getInstance().getReference("publicPhoto");
         bundle = getIntent().getExtras();
+        views =  bundle.getString("view");
         if(bundle.getBoolean("isAuthen")) {
             ownDatabaseRef = FirebaseDatabase.getInstance().getReference("privateUser");
             ownDatabaseRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     progressDialog.dismiss();
-                    DataSnapshot dataSnapshots = dataSnapshot.child(bundle.getString("userID"));
-                    for (DataSnapshot snapshot : dataSnapshots.getChildren()) {
-                        Photo img = snapshot.getValue(Photo.class);
-                        imgList.add(img);
+                    String userId = bundle.getString("userID");
+                    if (userId != null){
+                        DataSnapshot dataSnapshots = dataSnapshot.child(userId);
+                        for (DataSnapshot snapshot : dataSnapshots.getChildren()) {
+                            Photo img = snapshot.getValue(Photo.class);
+                            imgList.add(img);
+                        }
                     }
                 }
 
@@ -67,8 +72,12 @@ public class ViewActivity extends AppCompatActivity {
                     Photo img = snapshot.getValue(Photo.class);
                     imgList.add(img);
                 }
+                System.out.println("!!!!!!!!!!!!!!!");
+                System.out.println("The current id is :" + bundle.getString("userID"));
+
+                System.out.println("the current image list is " + imgList.size());
                 //Init adapter
-                adapter = new ImageListAdapter(ViewActivity.this, R.layout.image_item, imgList);
+                adapter = new ImageListAdapter(ViewActivity.this, R.layout.image_item, imgList, views);
                 //Set adapter for listview
                 lv.setAdapter(adapter);
             }

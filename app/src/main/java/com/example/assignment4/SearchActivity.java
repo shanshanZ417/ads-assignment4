@@ -8,14 +8,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
-import java.util.List;
+/**
+ * Created by misaki on 12/5/17.
+ * INTRO:
+ * pages that let user enter the keywords for search function
+ */
 
 public class SearchActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -35,6 +32,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onClick(View v){
         switch (v.getId()) {
+            // search button, forward to search page(with entered key word)
             case R.id.searchBut:
                 searchString = bsearchBox.getText().toString();
                 bundle = getIntent().getExtras();

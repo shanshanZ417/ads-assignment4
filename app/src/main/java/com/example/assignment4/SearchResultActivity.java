@@ -15,6 +15,12 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Created by misaki on 12/5/17.
+ * INTRO:
+ * check through database with entered keyword and given authentication info
+ */
+
 public class SearchResultActivity extends AppCompatActivity {
     String searchString;
     private DatabaseReference pubDatabaseRef;
@@ -41,6 +47,7 @@ public class SearchResultActivity extends AppCompatActivity {
         bundle = getIntent().getExtras();
         searchString = bundle.getString("searchString");
 
+        // Add the private photo to the ArrayList if user is authenticated
         if(bundle.getBoolean("isAuthen")) {
             ownDatabaseRef = FirebaseDatabase.getInstance().getReference("privateUser");
             ownDatabaseRef.addValueEventListener(new ValueEventListener() {
@@ -53,7 +60,6 @@ public class SearchResultActivity extends AppCompatActivity {
                         for (DataSnapshot snapshot : dataSnapshots.getChildren()) {
                             Photo img = snapshot.getValue(Photo.class);
                             if (img.getDescription().toLowerCase().contains(searchString.toLowerCase())){
-                                System.out.println("Here is the key word result!!!!!!" + img.getPhotoName());
                                 searchList.add(img);
                             }
                         }
@@ -66,6 +72,7 @@ public class SearchResultActivity extends AppCompatActivity {
                 }
             });
         }
+        // Add all public photo to the ArrayList
         pubDatabaseRef = FirebaseDatabase.getInstance().getReference("publicPhoto");
         pubDatabaseRef.addValueEventListener(new ValueEventListener() {
             @Override

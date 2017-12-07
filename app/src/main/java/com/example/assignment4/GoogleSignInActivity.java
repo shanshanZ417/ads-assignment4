@@ -27,6 +27,11 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 /**
  * Demonstrate Firebase Authentication using a Google ID Token.
+ * INTRO:
+ * Authentication for google account user log in
+ * REFERENCE:
+ * https://firebase.google.com/docs/auth/android/google-signin?authuser=0
+ * https://github.com/firebase/quickstart-android/blob/master/auth/app/src/main/java/com/google/firebase/quickstart/auth/GoogleSignInActivity.java#L72-L76
  */
 public class GoogleSignInActivity extends BaseActivity implements
         View.OnClickListener {
@@ -174,6 +179,7 @@ public class GoogleSignInActivity extends BaseActivity implements
                 });
     }
 
+    // [START updateUI]
     private void updateUI(FirebaseUser user) {
         hideProgressDialog();
         if (user != null) {
@@ -190,6 +196,7 @@ public class GoogleSignInActivity extends BaseActivity implements
             findViewById(R.id.sign_out_and_disconnect).setVisibility(View.GONE);
         }
     }
+    // [END updateUI]
 
     @Override
     public void onClick(View v) {
@@ -199,7 +206,7 @@ public class GoogleSignInActivity extends BaseActivity implements
         } else if (i == R.id.sign_out_button) {
             signOut();
         } else if (i == R.id.disconnect_button) {
-            //revokeAccess();
+            // add the authentication information into the bundle && forward to the other pages.
             Intent intent = new Intent(this, CoreFunctionActivity.class);
             Bundle bundle = new Bundle();
             bundle.putString("userID", userID);

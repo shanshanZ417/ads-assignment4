@@ -10,11 +10,16 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
+
+/**
+ * Created by misaki on 12/5/17.
+ * INTRO:
+ * retrieve photo information based on given authentication, store the qualified photo into ArrayList and pass it to adapter
+ */
+
 
 public class ViewActivity extends AppCompatActivity {
 
@@ -72,10 +77,6 @@ public class ViewActivity extends AppCompatActivity {
                     Photo img = snapshot.getValue(Photo.class);
                     imgList.add(img);
                 }
-                System.out.println("!!!!!!!!!!!!!!!");
-                System.out.println("The current id is :" + bundle.getString("userID"));
-
-                System.out.println("the current image list is " + imgList.size());
                 //Init adapter
                 adapter = new ImageListAdapter(ViewActivity.this, R.layout.image_item, imgList, views);
                 //Set adapter for listview

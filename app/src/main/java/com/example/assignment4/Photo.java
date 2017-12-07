@@ -2,6 +2,8 @@ package com.example.assignment4;
 
 /**
  * Created by misaki on 12/5/17.
+ * INTRO:
+ * Self-defined Photo class for storing the photo image
  */
 
 public class Photo {

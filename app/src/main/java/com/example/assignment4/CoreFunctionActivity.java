@@ -8,6 +8,12 @@ import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Toast;
 
+/**
+ * Created by misaki on 12/5/17.
+ * INTRO:
+ * The core function page with four core functions: image upload, original image view, processed image view and search image
+ */
+
 public class CoreFunctionActivity extends AppCompatActivity implements View.OnClickListener {
     Button buploadButton;
     Button bviewButton;
@@ -34,6 +40,7 @@ public class CoreFunctionActivity extends AppCompatActivity implements View.OnCl
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            // upload button, forward to upload page
             case R.id.uploadButton:
                 Intent intentUpload = new Intent(this, UploadActivity.class);
                 bundle = getIntent().getExtras();
@@ -44,6 +51,7 @@ public class CoreFunctionActivity extends AppCompatActivity implements View.OnCl
                     Toast.makeText(CoreFunctionActivity.this, "Sorry, You should login in order to upload photo!", Toast.LENGTH_LONG).show();
                 }
                 break;
+            // view button, forward to view page(original picture)
             case R.id.viewButton:
                 Intent intentView = new Intent(this, ViewActivity.class);
                 bundle = getIntent().getExtras();
@@ -51,12 +59,14 @@ public class CoreFunctionActivity extends AppCompatActivity implements View.OnCl
                 intentView.putExtras(bundle);
                 startActivity(intentView);
                 break;
+            // search button, forward to search page
             case R.id.searchButton:
                 Intent intentSearch = new Intent(this, SearchActivity.class);
                 bundle = getIntent().getExtras();
                 intentSearch.putExtras(bundle);
                 startActivity(intentSearch);
                 break;
+            // filter button, forward to view page(filtered picture)
             case R.id.filterButton:
                 Intent intentFilter = new Intent(this, ViewActivity.class);
                 bundle = getIntent().getExtras();

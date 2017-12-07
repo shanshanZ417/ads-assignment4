@@ -27,6 +27,14 @@ import com.google.firebase.storage.UploadTask;
 
 import java.util.UUID;
 
+
+/**
+ * Created by misaki on 12/5/17.
+ * INTRO:
+ * upload the image from chosen image from phone gallery, and update the database
+ * REFERENCE:
+ * https://www.youtube.com/watch?v=h62bcMwahTU
+ */
 public class UploadActivity extends AppCompatActivity implements View.OnClickListener{
     private static final int GALLERY_REQUEST= 1;
     // FireBase Storage settings
@@ -70,6 +78,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
 
 
     }
+    // helper function for writing information to firebase database when photo is uploaded
     private void writeToDatabase(Photo photo){
         publicRef = database.getReference("publicPhoto");
         privateRef = database.getReference("privateUser");
@@ -82,10 +91,12 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onClick(View v){
         switch(v.getId()){
+            // choose image button, choose image from the gallery
             case R.id.imageToUpload:
                 Intent openGallary = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(openGallary, GALLERY_REQUEST);
                 break;
+            // upload button, upload picture into storage, as well as update the database
             case R.id.uploadImage:
                 if (selectedImage != null) {
                     final ProgressDialog progressDialog = new ProgressDialog(this);
@@ -99,7 +110,6 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
                             progressDialog.dismiss();
                             Toast.makeText(UploadActivity.this, "Uploaded", Toast.LENGTH_SHORT).show();
                             url =  taskSnapshot.getDownloadUrl().toString();
-                            System.out.println("Here is the url !!!@@@@@@@@@" + url);
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
@@ -120,7 +130,6 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
                 boolean isprivate = isPrivate.isChecked();
                 Bundle bundles = getIntent().getExtras();
                 String userid = bundles.getString("userID");
-                System.out.println("The user id is !!!!!!!!!!!!" + userid);
                 boolean isAuthen = bundles.getBoolean("isAuthen");
 
                 Photo photo = new Photo(imageId, userid, imagename, imagedescription, isprivate, url);

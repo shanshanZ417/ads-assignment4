@@ -24,6 +24,11 @@ import java.util.List;
 
 /**
  * Created by misaki on 12/5/17.
+ * INTRO:
+ * adapter that store and show the information for each item in the given format
+ * REFERENCE:
+ * https://www.youtube.com/watch?v=akIrsTB2zIQ
+ * https://stackoverflow.com/questions/39702304/retrieve-stored-image-from-firebase-storage
  */
 
 public class ImageListAdapter extends ArrayAdapter<Photo> {
@@ -56,36 +61,29 @@ public class ImageListAdapter extends ArrayAdapter<Photo> {
         Photo i = listImage.get(position);
         tvName.setText(i.getPhotoName());
 
+        // check the type of image to be displayed -- original or processed photo
         if (views.equals("plain")){
             stroPath = "images/";
         } else {
             stroPath = "ascii-images/";
         }
-
-
         storageReference = FirebaseStorage.getInstance().getReference().child(stroPath + i.getPhotoId());
         final long ONE_MEGABYTE = 1024 * 1024;
+
+        // fetch image from firebase storage with given photoId
+        // display the image with bitmap
         storageReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
             @Override
             public void onSuccess(byte[] bytes) {
                 Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-
                 img.setImageBitmap(bmp);
-                // Data for "images/island.jpg" is returns, use this as needed
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-                // Handle any errors
             }
         });
 
-//
-//        System.out.println("The url here is !!!!@@@@@@@@@@@@" + i.getUrl());
-//        storageReference = FirebaseStorage.getInstance().getReference().child(listImage.get(position).getUrl());
-//        Glide.with(context).load(i.getUrl()).into(img);
-// //       Glide.with(context).using(new FirebaseImageLoader()).load(storageReference).into(img);
-//
 
         return v;
     }
